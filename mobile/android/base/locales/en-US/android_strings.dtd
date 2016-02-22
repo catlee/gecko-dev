@@ -266,6 +266,10 @@
 <!ENTITY pref_donottrack_title "Do not track">
 <!ENTITY pref_donottrack_summary "&brandShortName; will tell sites that you do not want to be tracked">
 
+<!ENTITY pref_sync_service_title "同步服务">
+<!ENTITY pref_sync_service_local "使用本地服务同步数据">
+<!ENTITY pref_sync_service_global "使用全球服务同步数据">
+
 <!ENTITY pref_tracking_protection_enabled "Enabled">
 <!ENTITY pref_tracking_protection_enabled_pb "Enabled in Private Browsing">
 <!ENTITY pref_tracking_protection_disabled "Disabled">

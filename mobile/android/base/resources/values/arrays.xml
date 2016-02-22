@@ -160,6 +160,14 @@
         <item>wifi</item>
         <item>disabled</item>
     </string-array>
+    <string-array name="pref_sync_service_entries">
+        <item>@string/pref_sync_service_local</item>
+        <item>@string/pref_sync_service_global</item>
+    </string-array>
+    <string-array name="pref_sync_service_values">
+        <item>local</item>
+        <item>global</item>
+    </string-array>
     <!-- This value is similar to config_longPressVibePattern in android frameworks/base/core/res/res/values/config.xml-->
     <integer-array name="long_press_vibrate_msec">
         <item>0</item>

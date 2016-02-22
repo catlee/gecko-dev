@@ -23,6 +23,9 @@ public class FxAccountConstants {
   public static final String STAGE_OAUTH_SERVER_ENDPOINT = "https://oauth-stable.dev.lcip.org/v1";
   public static final String STAGE_PROFILE_SERVER_ENDPOINT = "https://latest.dev.lcip.org/profile/v1";
 
+  public static final String CN_AUTH_SERVER_ENDPOINT = "https://api-accounts.firefox.com.cn/v1";
+  public static final String CN_OAUTH_SERVER_ENDPOINT = "https://oauth.firefox.com.cn/v1";
+
   // Action to update on cached profile information.
   public static final String ACCOUNT_PROFILE_JSON_UPDATED_ACTION = "org.mozilla.gecko.fxa.profile.JSON.updated";
 
