@@ -644,4 +644,18 @@
 
   <string name="activity_stream_welcome_title">&activity_stream_welcome_title;</string>
   <string name="activity_stream_welcome_content">&activity_stream_welcome_content1;</string>
+  <!-- Compatible mode -->
+  <string name="compatible_mode">&compatible_mode;</string>
+  <string name="compatible_mode_generic_name">&compatible_mode_generic_name;</string>
+  <string name="compatible_mode_longclicked_saveUrl">&compatible_mode_longclicked_saveUrl;</string>
+  <string name="compatible_mode_longclicked_saveImage">&compatible_mode_longclicked_saveImage;</string>
+  <string name="compatible_mode_menu_back">&compatible_mode_menu_back;</string>
+  <string name="compatible_mode_menu_forward">&compatible_mode_menu_forward;</string>
+  <string name="compatible_mode_menu_refresh">&compatible_mode_menu_refresh;</string>
+  <string name="compatible_mode_menu_save">&compatible_mode_menu_save;</string>
+  <string name="compatible_mode_menu_add">&compatible_mode_menu_add;</string>
+  <string name="compatible_mode_menu_remove">&compatible_mode_menu_remove;</string>
+  <string name="compatible_mode_menu_stop">&compatible_mode_menu_stop;</string>
+  <string name="compatible_mode_save_image">&compatible_mode_save_image;</string>
+  <string name="compatible_mode_save_url">&compatible_mode_save_url;</string>
 </resources>

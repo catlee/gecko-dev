@@ -44,6 +44,7 @@ import android.util.Log;
 
 public class Tabs implements BundleEventListener {
     private static final String LOGTAG = "GeckoTabs";
+    private Context mActivity;
 
     // mOrder and mTabs are always of the same cardinality, and contain the same values.
     private final CopyOnWriteArrayList<Tab> mOrder = new CopyOnWriteArrayList<Tab>();
@@ -133,6 +134,9 @@ public class Tabs implements BundleEventListener {
             "Tab:RecordingChange",
             "Tab:Select",
             "Tab:SetParentId",
+            "CompatibleMode:Show",
+            "CompatibleMode:Click",
+            "CompatibleMode:Unclick",
             null);
 
         EventDispatcher.getInstance().registerBackgroundThreadListener(this,
@@ -144,6 +148,7 @@ public class Tabs implements BundleEventListener {
     }
 
     public synchronized void attachToContext(Context context, LayerView layerView) {
+        mActivity = context;
         final Context appContext = context.getApplicationContext();
         if (mAppContext == appContext) {
             return;
@@ -502,6 +507,14 @@ public class Tabs implements BundleEventListener {
             return;
         }
 
+        if (event.equals("CompatibleMode:Show")) {
+            String url = message.getString("uri");
+            if (url != null) {
+              ((GeckoApp)mActivity).openCompatibleModeViewer(url);
+            }
+            return;
+        }
+
         // All other events handled below should contain a tabID property
         final int id = message.getInt("tabID", -1);
         Tab tab = getTab(id);
@@ -636,6 +649,14 @@ public class Tabs implements BundleEventListener {
                 notifyListeners(tab, TabEvents.MEDIA_PLAYING_CHANGE);
             }
 
+        } else if (event.equals("CompatibleMode:Click")) {
+            notifyListeners(tab, TabEvents.COMPATIBLEMODEICON_CHANGED);
+            String url = tab.getURL();
+            if (url != null) {
+              ((GeckoApp)mActivity).openCompatibleModeViewer(url);
+            }
+        } else if (event.equals("CompatibleMode:Unclick")) {
+            notifyListeners(tab, TabEvents.COMPATIBLEMODEICON_CHANGED);
         } else if ("Tab:SetParentId".equals(event)) {
             tab.setParentId(message.getInt("parentID", -1));
         }
@@ -694,7 +715,8 @@ public class Tabs implements BundleEventListener {
         AUDIO_PLAYING_CHANGE,
         OPENED_FROM_TABS_TRAY,
         MEDIA_PLAYING_CHANGE,
-        MEDIA_PLAYING_RESUME
+        MEDIA_PLAYING_RESUME,
+        COMPATIBLEMODEICON_CHANGED
     }
 
     public void notifyListeners(Tab tab, TabEvents msg) {
