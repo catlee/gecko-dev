@@ -15,6 +15,7 @@ EXTRA_COMPONENTS += [
     'AddonUpdateService.js',
     'BlocklistPrompt.js',
     'BrowserCLH.js',
+    'CMManager.js',
     'ColorPicker.js',
     'ContentDispatchChooser.js',
     'ContentPermissionPrompt.js',
