@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+    <solid android:color="#7f000000" />
+    <stroke android:width="3dp" color="#FF000000" />
+    <corners android:radius="3dp" />
+    <padding android:left="1px"
+             android:top="1px"
+             android:right="1px"
+             android:bottom="1px"/>
+</shape>
