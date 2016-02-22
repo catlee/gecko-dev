@@ -378,16 +378,25 @@ this.FxAccountsWebChannel.prototype = {
 };
 
 var singleton;
+var singletonLocal;
 // The entry-point for this module, which ensures only one of our channels is
 // ever created - we require this because the WebChannel is global in scope and
 // allowing multiple channels would cause such notifications to be sent multiple
 // times.
 this.EnsureFxAccountsWebChannel = function() {
   if (!singleton) {
-    let contentUri = Services.urlFormatter.formatURLPref("identity.fxaccounts.remote.webchannel.uri");
+    let contentUri = Services.urlFormatter.formatURLPref("identity.fxaccounts.remote.webchannel.global.uri");
     // The FxAccountsWebChannel listens for events and updates the Java layer.
     singleton = new this.FxAccountsWebChannel({
       content_uri: contentUri,
+      channel_id: WEBCHANNEL_ID,
+    });
+  }
+  if (!singletonLocal) {
+    let contentLocalUri = Services.urlFormatter.formatURLPref("identity.fxaccounts.remote.webchannel.local.uri");
+    // The FxAccountsWebChannel listens for events and updates the Java layer.
+    singletonLocal = new this.FxAccountsWebChannel({
+      content_uri: contentLocalUri,
       channel_id: WEBCHANNEL_ID,
     });
   }

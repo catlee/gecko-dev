@@ -16,6 +16,7 @@ import org.mozilla.gecko.DataReportingNotification;
 import org.mozilla.gecko.DynamicToolbar;
 import org.mozilla.gecko.EventDispatcher;
 import org.mozilla.gecko.Experiments;
+import org.mozilla.gecko.fxa.FirefoxAccounts;
 import org.mozilla.gecko.GeckoActivityStatus;
 import org.mozilla.gecko.GeckoApp;
 import org.mozilla.gecko.GeckoAppShell;
@@ -1526,6 +1527,16 @@ public class GeckoPreferences
                                                             ArrayList<String> prefs) {
         final PrefsHelper.PrefHandler prefHandler = new PrefCallbacks(screen);
         final String[] prefNames = prefs.toArray(new String[prefs.size()]);
+        final Preference syncServicePref = screen.findPreference("app.sync.service");
+        if (syncServicePref != null) {
+            final boolean enable = (FirefoxAccounts.getFirefoxAccount(getApplicationContext()) == null);
+            ThreadUtils.postToUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    syncServicePref.setEnabled(enable);
+                }
+            });
+        }
         PrefsHelper.addObserver(prefNames, prefHandler);
         return prefHandler;
     }

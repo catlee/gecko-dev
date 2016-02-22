@@ -325,6 +325,8 @@ public class AndroidFxAccount {
     // Allow testing against stage.
     if (isStaging()) {
       return FxAccountConstants.STAGE_OAUTH_SERVER_ENDPOINT;
+    } else if (FxAccountConstants.CN_AUTH_SERVER_ENDPOINT.equals(getAccountServerURI())) {
+      return FxAccountConstants.CN_OAUTH_SERVER_ENDPOINT;
     } else {
       return FxAccountConstants.DEFAULT_OAUTH_SERVER_ENDPOINT;
     }
