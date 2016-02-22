@@ -499,6 +499,8 @@
 #endif
 
 [mobile]
+@BINPATH@/components/CMManager.js
+
 @BINPATH@/chrome/chrome@JAREXT@
 @BINPATH@/chrome/chrome.manifest
 @BINPATH@/components/AboutRedirector.js
