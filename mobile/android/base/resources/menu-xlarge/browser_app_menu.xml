@@ -78,6 +78,11 @@
 
     </item>
 
+    <item android:id="@+id/compatible_mode"
+          android:icon="@drawable/ic_menu_compatible_mode"
+          android:title="@string/compatible_mode"
+          android:checkable="true" />
+
     <item android:id="@+id/tools"
           android:title="@string/tools">
 

@@ -354,6 +354,7 @@ gbjar.sources += ['java/org/mozilla/gecko/' + x for x in [
     'BrowserLocaleManager.java',
     'cleanup/FileCleanupController.java',
     'cleanup/FileCleanupService.java',
+    'compatiblemode/CompatibleModeActivity.java',
     'CustomEditText.java',
     'customtabs/CustomTabsActivity.java',
     'customtabs/GeckoCustomTabsService.java',
@@ -1117,6 +1118,7 @@ for var in ('MOZ_ANDROID_ANR_REPORTER', 'MOZ_DEBUG',
             'MOZ_ANDROID_ACTIVITY_STREAM'):
     if CONFIG[var]:
         DEFINES[var] = 1
+    'resources/drawable/ic_menu_compatible_mode.xml',
 
 for var in ('MOZ_UPDATER', 'MOZ_PKG_SPECIAL', 'MOZ_ANDROID_GCM_SENDERID'):
     if CONFIG[var]:

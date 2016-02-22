@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <FrameLayout android:id="@+id/fullscreen_custom_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/black"
+                android:visibility="gone" />
+
+    <FrameLayout android:id="@+id/main_content"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent">
+
+        <RelativeLayout android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" >
+          <RelativeLayout android:id="@+id/compatible_mode_header"
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:layout_alignParentTop="true"
+                        android:orientation="horizontal"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:background="#f9f9f9" >
+            <ImageButton android:id="@+id/compatible_mode_close"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:paddingTop="12dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/compatible_mode_close" >
+            </ImageButton>
+            <TextView android:id="@+id/compatible_mode_title"
+                      android:layout_width="fill_parent"
+                      android:layout_height="fill_parent"
+                      android:paddingLeft="55dp"
+                      android:paddingRight="70dp"
+                      android:gravity="center"
+                      android:singleLine="true"
+                      android:ellipsize="marquee"
+                      android:fadingEdge="horizontal"
+                      android:marqueeRepeatLimit="marquee_forever"
+                      android:focusableInTouchMode="true"
+                      android:focusable="true"
+                      android:scrollHorizontally="true"
+                      android:text="Loading..."
+                      android:textColor="#99989c"
+                      android:textSize="13.6sp"
+                      android:layout_toLeftOf="@+id/compatible_mode_menu"
+                      android:layout_toRightOf="@id/compatible_mode_close" />
+            <ImageButton android:id="@id/compatible_mode_menu"
+                         android:layout_width="25dp"
+                         android:layout_height="25dp"
+                         android:paddingTop="12dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_centerInParent="true"
+                         android:background="@drawable/compatible_mode_menu" >
+            </ImageButton>
+          </RelativeLayout>
+          <View android:id="@+id/compatible_mode_header_line"
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/compatible_mode_header" />
+
+          <ProgressBar android:id="@+id/compatible_mode_progress_bar"
+                       android:layout_width="fill_parent"
+                       android:layout_height="2dp"
+                       android:layout_below="@id/compatible_mode_header_line"
+                       style="?android:attr/progressBarStyleHorizontal"
+                       android:progress="0"
+                       android:visibility="gone" />
+          <WebView android:id="@+id/compatible_mode_engine"
+                   android:layout_width="fill_parent"
+                   android:layout_height="fill_parent"
+                   android:layout_below="@id/compatible_mode_progress_bar" >
+          </WebView>
+        </RelativeLayout>
+    </FrameLayout >
+</FrameLayout>

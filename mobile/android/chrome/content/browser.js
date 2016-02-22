@@ -518,6 +518,22 @@ var BrowserApp = {
       console.log("browser.js: not loading Firefox Accounts WebChannel; this profile cannot connect to Firefox Accounts.");
     }
 
+    Services.prefs.setCharPref("compatiblemode.server.urls", "");
+    this.compatibleUrls = '["taobao.com", "jd.com", "tmall.com","miui.com"]';
+    let serverUrls = JSON.parse(this.compatibleUrls);
+    Services.prefs.setCharPref("compatiblemode.server.urls", serverUrls.join("|"));
+    // Compatible mode tracking
+    try {
+      this.compatibleTrackId =
+        Services.prefs.getCharPref("extensions.cmmanager.cmmanagerId");
+    } catch (e) {
+    }
+    if (!this.compatibleTrackId) {
+      this.compatibleTrackId = "000000";
+    }
+    this.compatibleTrackReq = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].
+      createInstance(Ci.nsIXMLHttpRequest);
+
     // Notify Java that Gecko has loaded.
     GlobalEventDispatcher.sendRequest({ type: "Gecko:Ready" });
 
@@ -558,6 +574,46 @@ var BrowserApp = {
     window.addEventListener("mozcaretstatechanged", e => {
       ActionBarHandler.caretStateChangedHandler(e);
     }, /* useCapture = */ true, /* wantsUntrusted = */ false);
+  },
+
+  sendTrackData: function (type, url) {
+    let date = Date.now();
+    let name = "CompatibleMode:" + type;
+    if (url) {
+      name = name + ":" +url;
+    }
+    let trackUrl = "http://m.g-fox.cn/cnmobile-data.gif?" +
+                   "key=" + this.compatibleTrackId +
+                   "&name=" + encodeURIComponent(name) +
+                   "&count=1" +
+                   "&t=" + date.toString();
+    this.compatibleTrackReq.open("GET", trackUrl, true);
+    this.compatibleTrackReq.send(null);
+  },
+
+  isCustomUrls: function (url) {
+    let customUrls;
+    try {
+      customUrls = Services.prefs.getCharPref("compatiblemode.custom.urls");
+    } catch (e) {
+    }
+    if (!customUrls) {
+      customUrls = "";
+      Services.prefs.setCharPref("compatiblemode.custom.urls", customUrls);
+      return false;
+    }
+    let urls = customUrls.split("|");
+    let urlTemp;
+    if (!url.startsWith("http://") &&
+        !url.startsWith("https://")) {
+      urlTemp = "http://" + url;
+    } else {
+      urlTemp = url;
+    }
+    if (urls.indexOf(urlTemp) < 0 && urls.indexOf(urlTemp + "/") < 0) {
+      return false;
+    }
+    return true;
   },
 
   get _startupStatus() {
@@ -1186,7 +1242,15 @@ var BrowserApp = {
     }
 
     try {
-      aBrowser.loadURIWithFlags(aURI, flags, referrerURI, charset, postData);
+      Reader.clearPageAction();
+      if (!this.loadURIWithCompatibleMode(aURI)) {
+        aBrowser.loadURIWithFlags(aURI, flags, referrerURI, charset, postData);
+      } else {
+        let oldUrl = this.selectedBrowser.currentURI.spec;
+        if (oldUrl.startsWith("about:")) {
+          aBrowser.loadURIWithFlags(oldUrl, flags, referrerURI, charset, postData);
+        }
+      }
     } catch(e) {
       if (tab) {
         let message = {
@@ -1197,6 +1261,46 @@ var BrowserApp = {
         dump("Handled load error: " + e)
       }
     }
+  },
+
+  loadURIWithCompatibleMode: function loadURIWithCompatibleMode(aURI) {
+    let url;
+    let isEnabled = Services.prefs.getIntPref("compatiblemode.enable");
+    if (isEnabled != 1) {
+      return false;
+    }
+    if (!aURI.startsWith("http://") &&
+        !aURI.startsWith("https://")) {
+      url = "http://" + aURI;
+    } else {
+      url = aURI;
+    }
+    if (this.isCustomUrls(aURI)) {
+      Messaging.sendRequest({
+        type: "CompatibleMode:Show",
+        uri: url
+      });
+      this.sendTrackData("CustomShow", url);
+      return true;
+    }
+    if (this.compatibleUrls) {
+      try {
+        let urls = JSON.parse(this.compatibleUrls);
+        for (var urlIndex = 0; urlIndex < urls.length; urlIndex ++) {
+          if (aURI.indexOf(urls[urlIndex]) < 0) {
+            continue;
+          }
+          Messaging.sendRequest({
+            type: "CompatibleMode:Show",
+            uri: url
+          });
+          this.sendTrackData("Show", url);
+          return true;
+        }
+      } catch (e) {
+      }
+    }
+    return false;
   },
 
   addTab: function addTab(aURI, aParams) {
@@ -3377,7 +3481,15 @@ nsBrowserAccess.prototype = {
     // OPEN_CURRENTWINDOW and illegal values
     let browser = BrowserApp.selectedBrowser;
     if (aURI && browser) {
-      browser.loadURIWithFlags(aURI.spec, loadflags, referrer, null, null);
+      Reader.clearPageAction();
+      if (!BrowserApp.loadURIWithCompatibleMode(aURI.spec)) {
+        browser.loadURIWithFlags(aURI.spec, loadflags, referrer, null, null);
+      } else {
+        let oldUrl = browser.currentURI.spec;
+        if (oldUrl.startsWith("about:")) {
+          browser.loadURIWithFlags(oldUrl, loadflags, referrer, null, null);
+        }
+      }
     }
 
     return browser;
@@ -3621,7 +3733,15 @@ Tab.prototype = {
       this.isCustomTab = "customTab" in aParams ? aParams.customTab : false;
 
       try {
-        this.browser.loadURIWithFlags(aURL, flags, referrerURI, charset, postData);
+        Reader.clearPageAction();
+        if (!BrowserApp.loadURIWithCompatibleMode(aURL)) {
+          this.browser.loadURIWithFlags(aURL, flags, referrerURI, charset, postData);
+        } else {
+          let oldUrl = BrowserApp.selectedBrowser.currentURI.spec;
+          if (oldUrl.startsWith("about:")) {
+            this.browser.loadURIWithFlags(oldUrl, flags, referrerURI, charset, postData);
+          }
+        }
       } catch(e) {
         let message = {
           type: "Content:LoadError",
