@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+  <Button android:id="@+id/item_clicked_back"
+          android:layout_width="140dp"
+          android:layout_height="37dp"
+          android:textColor="@color/compatible_mode_menu_text"
+          android:textSize="15sp"
+          android:text="@string/compatible_mode_menu_back"
+          android:drawableLeft="@drawable/compatible_mode_menu_back"
+          android:background="@drawable/compatible_mode_menu_item"
+          android:gravity="left|center_vertical"
+          android:paddingLeft="10dp"
+          android:layout_alignParentTop="true" />
+
+  <View android:id="@+id/item_clicked_back_divider"
+        android:layout_width="120dp"
+        android:layout_height="1px"
+        android:background="#ffe8e8e8"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/item_clicked_back" />
+
+  <Button android:id="@+id/item_clicked_forward"
+          android:layout_width="140dp"
+          android:layout_height="37dp"
+          android:textColor="@color/compatible_mode_menu_text"
+          android:textSize="15sp"
+          android:text="@string/compatible_mode_menu_forward"
+          android:drawableLeft="@drawable/compatible_mode_menu_forward"
+          android:background="@drawable/compatible_mode_menu_item"
+          android:gravity="left|center_vertical"
+          android:paddingLeft="10dp"
+          android:layout_below="@id/item_clicked_back_divider" />
+
+  <View android:id="@+id/item_clicked_forward_divider"
+        android:layout_width="120dp"
+        android:layout_height="1px"
+        android:background="#ffe8e8e8"
+        android:layout_below="@id/item_clicked_forward"
+        android:layout_marginLeft="10dp" />
+
+  <Button android:id="@+id/item_clicked_stop"
+          android:layout_width="140dp"
+          android:layout_height="37dp"
+          android:textColor="@color/compatible_mode_menu_text"
+          android:textSize="15sp"
+          android:text="@string/compatible_mode_menu_stop"
+          android:drawableLeft="@drawable/compatible_mode_menu_stop"
+          android:background="@drawable/compatible_mode_menu_item"
+          android:gravity="left|center_vertical"
+          android:paddingLeft="10dp"
+          android:layout_below="@id/item_clicked_forward_divider" />
+
+  <Button android:id="@+id/item_clicked_refresh"
+          android:layout_width="140dp"
+          android:layout_height="37dp"
+          android:textColor="@color/compatible_mode_menu_text"
+          android:textSize="15sp"
+          android:text="@string/compatible_mode_menu_refresh"
+          android:drawableLeft="@drawable/compatible_mode_menu_refresh"
+          android:background="@drawable/compatible_mode_menu_item"
+          android:gravity="left|center_vertical"
+          android:paddingLeft="10dp"
+          android:layout_below="@id/item_clicked_forward_divider" />
+
+  <View android:id="@+id/item_clicked_refresh_divider"
+        android:layout_width="120dp"
+        android:layout_height="1px"
+        android:layout_marginLeft="10dp"
+        android:background="#ffe8e8e8"
+        android:layout_below="@id/item_clicked_refresh" />
+
+  <Button android:id="@+id/item_clicked_save"
+          android:layout_width="140dp"
+          android:layout_height="37dp"
+          android:textColor="@color/compatible_mode_menu_text"
+          android:textSize="15sp"
+          android:text="@string/compatible_mode_menu_save"
+          android:drawableLeft="@drawable/compatible_mode_menu_save"
+          android:background="@drawable/compatible_mode_menu_item"
+          android:gravity="left|center_vertical"
+          android:paddingLeft="10dp"
+          android:layout_below="@id/item_clicked_refresh_divider" />
+
+  <View android:id="@+id/item_clicked_save_divider"
+        android:layout_width="120dp"
+        android:layout_height="1px"
+        android:layout_marginLeft="10dp"
+        android:background="#ffe8e8e8"
+        android:layout_below="@id/item_clicked_save" />
+
+  <Button android:id="@+id/item_clicked_add"
+          android:layout_width="140dp"
+          android:layout_height="37dp"
+          android:textColor="@color/compatible_mode_menu_text"
+          android:textSize="15sp"
+          android:text="@string/compatible_mode_menu_add"
+          android:drawableLeft="@drawable/compatible_mode_menu_add"
+          android:background="@drawable/compatible_mode_menu_item"
+          android:gravity="left|center_vertical"
+          android:paddingLeft="10dp"
+          android:layout_below="@id/item_clicked_save_divider" />
+
+  <Button android:id="@+id/item_clicked_remove"
+          android:layout_width="140dp"
+          android:layout_height="37dp"
+          android:textColor="@color/compatible_mode_menu_text"
+          android:textSize="15sp"
+          android:text="@string/compatible_mode_menu_remove"
+          android:drawableLeft="@drawable/compatible_mode_menu_remove"
+          android:background="@drawable/compatible_mode_menu_item"
+          android:gravity="left|center_vertical"
+          android:paddingLeft="10dp"
+          android:layout_below="@id/item_clicked_save_divider" />
+
+</RelativeLayout>

@@ -207,6 +207,9 @@ public class BrowserApp extends GeckoApp
                                    LayoutInflater.Factory {
     private static final String LOGTAG = "GeckoBrowserApp";
 
+    private Boolean mCompatibleMode = false;
+    private static final String PREF_COMPATIBLE_MODE = "compatiblemode.enable";
+
     private static final int TABS_ANIMATION_DURATION = 450;
 
     // Intent String extras used to specify custom Switchboard configurations.
@@ -264,6 +267,8 @@ public class BrowserApp extends GeckoApp
     private static final int GECKO_TOOLS_MENU = -1;
     private static final int ADDON_MENU_OFFSET = 1000;
     public static final String TAB_HISTORY_FRAGMENT_TAG = "tabHistoryFragment";
+
+    private PrefsHelper.PrefHandler mCompatibilityPrefObserver;
 
     private static class MenuItemInfo {
         public int id;
@@ -425,6 +430,9 @@ public class BrowserApp extends GeckoApp
                     // Copy to avoid constructing new objects.
                     tab.getEditingState().copyFrom(mLastTabEditingState);
                 }
+                break;
+            case COMPATIBLEMODEICON_CHANGED:
+                setCompatibleModePageActionDrawable();
                 break;
         }
 
@@ -610,6 +618,26 @@ public class BrowserApp extends GeckoApp
 
         final SafeIntent intent = new SafeIntent(getIntent());
         final boolean isInAutomation = IntentUtils.getIsInAutomationFromEnvironment(intent);
+        mCompatibilityPrefObserver = new PrefsHelper.PrefHandlerBase() {
+            @Override
+            public void prefValue(String pref, int value) {
+                boolean newValue = value == 1;
+                if (mCompatibleMode == newValue) {
+                    return;
+                }
+                mCompatibleMode = newValue;
+                ThreadUtils.postToUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Tab tab = Tabs.getInstance().getSelectedTab();
+                        if (tab != null) {
+                            tab.doReload(false);
+                        }
+                    }
+                });
+            }
+        };
+        PrefsHelper.addObserver(new String[] { PREF_COMPATIBLE_MODE }, mCompatibilityPrefObserver);
 
         // This has to be prepared prior to calling GeckoApp.onCreate, because
         // widget code and BrowserToolbar need it, and they're created by the
@@ -1562,6 +1590,7 @@ public class BrowserApp extends GeckoApp
         IntentHelper.destroy();
         GeckoNetworkManager.destroy();
 
+        PrefsHelper.removeObserver(mCompatibilityPrefObserver);
         super.onDestroy();
 
         if (!isFinishing()) {
@@ -2575,6 +2604,10 @@ public class BrowserApp extends GeckoApp
         }
     }
 
+    public void setCompatibleModePageActionDrawable() {
+        mBrowserToolbar.setCompatibleModePageActionDrawable();
+    }
+
     private void loadUrlOrKeywordSearch(final String url) {
         // Don't do anything if the user entered an empty URL.
         if (TextUtils.isEmpty(url)) {
@@ -3388,6 +3421,9 @@ public class BrowserApp extends GeckoApp
         if (aMenu == null)
             return false;
 
+        MenuItem compatibleMode = aMenu.findItem(R.id.compatible_mode);
+        compatibleMode.setChecked(mCompatibleMode);
+
         // Hide the tab history panel when hardware menu button is pressed.
         TabHistoryFragment frag = (TabHistoryFragment) getSupportFragmentManager().findFragmentByTag(TAB_HISTORY_FRAGMENT_TAG);
         if (frag != null) {
@@ -3802,6 +3838,12 @@ public class BrowserApp extends GeckoApp
 
         if (itemId == R.id.exit_guest_session) {
             showGuestModeDialog(GuestModeDialog.LEAVING);
+            return true;
+        }
+
+        if (itemId == R.id.compatible_mode) {
+            // Toggle compatible mode.
+            PrefsHelper.setPref(PREF_COMPATIBLE_MODE, mCompatibleMode ? 2 : 1);
             return true;
         }
 

@@ -158,15 +158,24 @@ var Reader = {
     },
   },
 
+  clearPageAction: function clearPageAction() {
+    if(!this._pageActionIds) {
+      this._pageActionIds = [];
+      return;
+    }
+    while (this._pageActionIds.length > 0) {
+      var pageActionId = this._pageActionIds.shift();
+      PageActions.remove(pageActionId);
+    }
+  },
+
   updatePageAction: function(tab) {
     if (!tab.getActive()) {
       return;
     }
 
-    if (this.pageAction.id) {
-      PageActions.remove(this.pageAction.id);
-      delete this.pageAction.id;
-    }
+    var pageActionId;
+    this.clearPageAction();
 
     let showPageAction = (icon, title) => {
       this.pageAction.id = PageActions.add({
@@ -175,6 +184,7 @@ var Reader = {
         clickCallback: () => this.pageAction.readerModeCallback(browser),
         important: true
       });
+      this._pageActionIds.push(this.pageAction.id);
     };
 
     let browser = tab.browser;
@@ -191,6 +201,101 @@ var Reader = {
 
     // Only stop a reader session if the foreground viewer is not visible.
     UITelemetry.stopSession("reader.1", "", null);
+
+    if (browser.currentURI.spec.startsWith("about:")) {
+      return;
+    }
+    let isEnabled = Services.prefs.getIntPref("compatiblemode.enable");
+    if (isEnabled == 1) {
+      //Add for compatibleMode mode
+      //if browser.currentURI.spec in compatibleMode list
+      let compatibleModeURL = "drawable://compatible_mode_icon_normal";
+      let contentWindow = tab.browser.contentWindow;
+      let contentDocument = contentWindow.document;
+      let host = contentDocument.documentURIObject.asciiHost;
+      if (BrowserApp.isCustomUrls(browser.currentURI.spec)) {
+        compatibleModeURL = "drawable://compatible_mode_icon_active";
+        let notificationID = host;
+        let strings = Strings.browser;
+        let message = strings.formatStringFromName("compatibleMode.ask", [host], 1);
+        let buttons = [
+          {
+            label: strings.GetStringFromName("compatibleMode.dontAllow"),
+            callback: function(aChecked) {
+              Messaging.sendRequest({
+                type: "CompatibleMode:Unclick",
+                tabID: tab.id
+              });
+              BrowserApp.sendTrackData("CustomPressNo");
+            }
+          },
+          {
+            label: strings.GetStringFromName("compatibleMode.allow"),
+            callback: function(aChecked) {
+              Messaging.sendRequest({
+                type: "CompatibleMode:Click",
+                tabID: tab.id
+              });
+              BrowserApp.sendTrackData("CustomPressYes", browser.currentURI.spec);
+            },
+            positive: true
+          }];
+
+        let options = {};
+        NativeWindow.doorhanger.show(message, notificationID, buttons, tab.id, options);
+        BrowserApp.sendTrackData("CustomNotify");
+      } else if (BrowserApp.compatibleUrls) {
+        let compatibleUrls = JSON.parse(BrowserApp.compatibleUrls);
+        for (var urlIndex = 0; urlIndex < compatibleUrls.length; urlIndex ++) {
+          if (host.indexOf(compatibleUrls[urlIndex]) < 0) {
+            continue;
+          }
+          compatibleModeURL = "drawable://compatible_mode_icon_active";
+          let notificationID = host;
+          let strings = Strings.browser;
+          let message = strings.formatStringFromName("compatibleMode.ask", [host], 1);
+          let buttons = [{
+            label: strings.GetStringFromName("compatibleMode.dontAllow"),
+            callback: function(aChecked) {
+              Messaging.sendRequest({
+                type: "CompatibleMode:Unclick",
+                tabID: tab.id
+              });
+              BrowserApp.sendTrackData("PressNo");
+            }
+          },
+          {
+            label: strings.GetStringFromName("compatibleMode.allow"),
+            callback: function(aChecked) {
+              Messaging.sendRequest({
+                type: "CompatibleMode:Click",
+                tabID: tab.id
+              });
+              BrowserApp.sendTrackData("PressYes", browser.currentURI.spec);
+            },
+            positive: true
+          }];
+          let options = {};
+          NativeWindow.doorhanger.show(message, notificationID, buttons, tab.id, options);
+          BrowserApp.sendTrackData("Notify");
+          break;
+        }
+      }
+      this.pageAction.compatibleModeCallback = function(tabID) {
+        Messaging.sendRequest({
+            type: "CompatibleMode:Click",
+            tabID: tabID
+        });
+        BrowserApp.sendTrackData("PressIcon", browser.currentURI.spec);
+      };
+      pageActionId = PageActions.add({
+        title: Strings.browser.GetStringFromName("compatibleMode.enter"),
+        icon: compatibleModeURL,
+        clickCallback: () => this.pageAction.compatibleModeCallback(tab.id),
+        important: true
+      });
+      this._pageActionIds.push(pageActionId);
+    }
 
     if (browser.isArticle) {
       showPageAction("drawable://reader", Strings.reader.GetStringFromName("readerView.enter"));

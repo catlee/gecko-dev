@@ -59,6 +59,15 @@
              package hierarchy inside the Android package used to have an
              org.mozilla.{fennec,firefox,firefox_beta} subtree *and* an
              org.mozilla.gecko subtree; it now only has org.mozilla.gecko. -->
+        <activity android:name="org.mozilla.gecko.compatiblemode.activities.CompatibleModeActivity"
+                  android:label="@string/compatible_mode_generic_name"
+                  android:taskAffinity="org.mozilla.gecko.WEBAPP"
+                  android:configChanges="keyboard|keyboardHidden|mcc|mnc|orientation|screenSize"
+                  android:windowSoftInputMode="stateUnspecified|adjustResize"
+                  android:launchMode="singleTask"
+                  android:exported="true"
+                  android:theme="@style/Gecko.App">
+        </activity>
         <activity android:name="@MOZ_ANDROID_BROWSER_INTENT_CLASS@"
                   android:label="@string/moz_app_displayname"
                   android:taskAffinity="@ANDROID_PACKAGE_NAME@.BROWSER"
