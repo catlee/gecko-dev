@@ -5289,7 +5289,7 @@ pref("layout.accessiblecaret.hide_carets_for_mouse_input", true);
 pref("dom.wakelock.enabled", false);
 
 // The URL of the Firefox Accounts auth server backend
-pref("identity.fxaccounts.auth.uri", "https://api.accounts.firefox.com/v1");
+pref("identity.fxaccounts.auth.uri", "https://api-accounts.firefox.com.cn/v1");
 
 pref("beacon.enabled", true);
 

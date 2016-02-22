@@ -10,6 +10,7 @@ import java.util.Locale;
 import org.mozilla.gecko.AppConstants.Versions;
 import org.mozilla.gecko.BrowserLocaleManager;
 import org.mozilla.gecko.GeckoApplication;
+import org.mozilla.gecko.fxa.FirefoxAccounts;
 import org.mozilla.gecko.GeckoSharedPrefs;
 import org.mozilla.gecko.LocaleManager;
 import org.mozilla.gecko.PrefsHelper;
@@ -19,6 +20,7 @@ import org.mozilla.gecko.TelemetryContract;
 import org.mozilla.gecko.TelemetryContract.Method;
 import org.mozilla.gecko.fxa.AccountLoader;
 import org.mozilla.gecko.fxa.authenticator.AndroidFxAccount;
+import org.mozilla.gecko.util.ThreadUtils;
 
 import android.accounts.Account;
 import android.app.ActionBar;
@@ -29,6 +31,7 @@ import android.content.Loader;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
@@ -190,6 +193,16 @@ public class GeckoPreferenceFragment extends PreferenceFragment {
         // This is a little delicate. Ensure that you do nothing prior to
         // super.onResume that you wouldn't do in onCreate.
         applyLocale(Locale.getDefault());
+        final Preference syncServicePref = getPreferenceManager().findPreference("app.sync.service");
+        if (syncServicePref != null) {
+            final boolean enable = (FirefoxAccounts.getFirefoxAccount(getActivity()) == null);
+            ThreadUtils.postToUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    syncServicePref.setEnabled(enable);
+                }
+            });
+        }
         super.onResume();
 
         // Force reload as the account may have been deleted while the app was in background.
