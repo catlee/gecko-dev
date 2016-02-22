@@ -52,8 +52,19 @@ public class UpdateServiceHelper {
     private static final String LOGTAG = "UpdateServiceHelper";
     private static final String DEFAULT_UPDATE_LOCALE = "en-US";
 
+    private static final String CN_UPDATE_URL;
+
     // So that updates can be disabled by tests.
     private static volatile boolean isEnabled = true;
+
+    static {
+            CN_UPDATE_URL = "https://aus2.mozilla.com.cn/update/4/" + AppConstants.MOZ_APP_BASENAME + "/" +
+                        AppConstants.MOZ_APP_VERSION         +
+                        "/%BUILDID%/%BUILD_TARGET%"          +
+                        "/%LOCALE%/"                         + AppConstants.MOZ_UPDATE_CHANNEL +
+                        "/%OS_VERSION%/%CHANNELID%/default/"     + AppConstants.MOZILLA_VERSION +
+                        "/update.xml";
+    }
 
     private enum Pref {
         AUTO_DOWNLOAD_POLICY("app.update.autodownload"),
@@ -123,6 +134,16 @@ public class UpdateServiceHelper {
             .replace("%DISTRIBUTION%", "default")
             .replace("%DISTRIBUTION_VERSION%", "default")
             .replace("%MOZ_VERSION%", AppConstants.MOZILLA_VERSION);
+
+        String channelId = "base";
+
+        url = CN_UPDATE_URL
+                .replace("%LOCALE%", locale)
+                .replace("%OS_VERSION%", Build.VERSION.RELEASE)
+                .replace("%BUILDID%",
+                        force ? "0" : AppConstants.MOZ_APP_BUILDID)
+                .replace("%BUILD_TARGET%", "Android_" + AppConstants.MOZ_APP_ABI + pkgSpecial)
+                .replace("%CHANNELID%", channelId);
 
         try {
             return new URI(url);
