@@ -876,7 +876,7 @@ public class GeckoPreferences
                         continue;
                     }
                 } else if (PREFS_HOMEPAGE.equals(key)) {
-                        String setUrl = GeckoSharedPrefs.forProfile(getBaseContext()).getString(PREFS_HOMEPAGE, AboutPages.HOME);
+                        String setUrl = GeckoSharedPrefs.forProfile(getBaseContext()).getString(PREFS_HOMEPAGE, AboutPages.CHINAHOME);
                         setHomePageSummary(pref, setUrl);
                         pref.setOnPreferenceChangeListener(this);
                 } else if (PREFS_FAQ_LINK.equals(key)) {
@@ -944,7 +944,7 @@ public class GeckoPreferences
         if (!TextUtils.isEmpty(value)) {
             pref.setSummary(value);
         } else {
-            pref.setSummary(AboutPages.HOME);
+            pref.setSummary(AboutPages.CHINAHOME);
         }
     }
 
