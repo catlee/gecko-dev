@@ -137,6 +137,7 @@ public class Tabs implements BundleEventListener {
             "CompatibleMode:Show",
             "CompatibleMode:Click",
             "CompatibleMode:Unclick",
+            "Tab:GoHome",
             null);
 
         EventDispatcher.getInstance().registerBackgroundThreadListener(this,
@@ -657,6 +658,8 @@ public class Tabs implements BundleEventListener {
             }
         } else if (event.equals("CompatibleMode:Unclick")) {
             notifyListeners(tab, TabEvents.COMPATIBLEMODEICON_CHANGED);
+        } else if (event.equals("Tab:GoHome")) {
+            notifyListeners(tab, TabEvents.GO_HOME);
         } else if ("Tab:SetParentId".equals(event)) {
             tab.setParentId(message.getInt("parentID", -1));
         }
@@ -716,7 +719,8 @@ public class Tabs implements BundleEventListener {
         OPENED_FROM_TABS_TRAY,
         MEDIA_PLAYING_CHANGE,
         MEDIA_PLAYING_RESUME,
-        COMPATIBLEMODEICON_CHANGED
+        COMPATIBLEMODEICON_CHANGED,
+        GO_HOME
     }
 
     public void notifyListeners(Tab tab, TabEvents msg) {

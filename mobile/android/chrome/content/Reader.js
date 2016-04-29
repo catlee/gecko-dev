@@ -188,6 +188,24 @@ var Reader = {
     };
 
     let browser = tab.browser;
+
+    if (Services.prefs.getBoolPref("homebutton_enabled")) {
+      this.pageAction.homeButtonCallback = function(tabID) {
+        Messaging.sendRequest({
+            type: "Tab:GoHome",
+            tabID: tabID
+        });
+        BrowserApp.sendTrackData("PressHomeButton");
+      };
+      var homeButtonId = PageActions.add({
+        title: Strings.browser.GetStringFromName("homeButton.enter"),
+        icon: "drawable://home_button",
+        clickCallback: () => this.pageAction.homeButtonCallback(tab.id),
+        important: true
+      });
+      this._pageActionIds.push(homeButtonId);
+    }
+
     if (browser.currentURI.spec.startsWith("about:reader")) {
       showPageAction("drawable://reader_active", Strings.reader.GetStringFromName("readerView.close"));
       // Only start a reader session if the viewer is in the foreground. We do
@@ -202,11 +220,10 @@ var Reader = {
     // Only stop a reader session if the foreground viewer is not visible.
     UITelemetry.stopSession("reader.1", "", null);
 
-    if (browser.currentURI.spec.startsWith("about:")) {
-      return;
-    }
     let isEnabled = Services.prefs.getIntPref("compatiblemode.enable");
-    if (isEnabled == 1) {
+    if (isEnabled == 1 &&
+        !browser.currentURI.spec.startsWith("about:") &&
+        browser.currentURI.spec.indexOf("firefox") < 0) {
       //Add for compatibleMode mode
       //if browser.currentURI.spec in compatibleMode list
       let compatibleModeURL = "drawable://compatible_mode_icon_normal";

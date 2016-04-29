@@ -25,7 +25,7 @@ import org.mozilla.gecko.TelemetryContract;
 public class FirstrunPanel extends Fragment {
 
     public static final int TITLE_RES = -1;
-    protected boolean showBrowserHint = true;
+    protected boolean showBrowserHint = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
