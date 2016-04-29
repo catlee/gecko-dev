@@ -21,7 +21,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 public class SetHomepagePreference extends DialogPreference {
-    private static final String DEFAULT_HOMEPAGE = AboutPages.HOME;
+    private static final String DEFAULT_HOMEPAGE = AboutPages.CHINAHOME;
 
     private final SharedPreferences prefs;
 

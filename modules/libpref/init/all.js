@@ -1990,6 +1990,8 @@ pref("permissions.default.image",           1); // 1-Accept, 2-Deny, 3-dontAccep
 
 pref("compatiblemode.enable",           1); // 1-Enable, 2-Disable
 
+pref("homebutton_enabled", true); // true-show home button on address bar
+
 pref("network.proxy.type",                  5);
 pref("network.proxy.ftp",                   "");
 pref("network.proxy.ftp_port",              0);
