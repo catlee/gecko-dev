@@ -361,7 +361,20 @@ public class HomeConfigPrefsBackend implements HomeConfigBackend {
     static synchronized JSONArray migratePrefsFromVersionToVersion(final Context context, final int currentVersion, final int newVersion,
                                                               final JSONArray jsonPanelsIn, final SharedPreferences.Editor prefsEditor) throws JSONException {
 
-        JSONArray jsonPanels = jsonPanelsIn;
+        JSONArray jsonPanelsTmp = jsonPanelsIn;
+	//If the browser version is more than 47, we need remove navigator panel
+        JSONArray jsonPanels = new JSONArray();
+        for (int i = 0; i < jsonPanelsTmp.length(); i++) {
+            JSONObject panelObj = jsonPanelsTmp.getJSONObject(i);
+            if (TextUtils.equals("navigator", panelObj.optString("type", null)) ||
+                TextUtils.equals("navigation", panelObj.optString("type", null))) {
+                continue;
+            }
+            if (TextUtils.equals("speed_dial", panelObj.optString("type", null))) {
+                panelObj.put("type", "top_sites");
+            }
+            jsonPanels.put(jsonPanelsTmp.get(i));
+        }
 
         for (int v = currentVersion + 1; v <= newVersion; v++) {
             Log.d(LOGTAG, "Migrating to version = " + v);
