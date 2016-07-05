@@ -5115,9 +5115,9 @@ pref("urlclassifier.malwareTable", "goog-malware-shavar,goog-unwanted-shavar,tes
 #ifdef MOZILLA_OFFICIAL
 // In the official build, we are allowed to use google's private
 // phishing list "goog-phish-shavar". See Bug 1288840.
-pref("urlclassifier.phishTable", "goog-phish-shavar,test-phish-simple");
+pref("urlclassifier.phishTable", "goog-phish-shavar,test-phish-simple,aqksb-phish-shavar,utnpnb-phish-shavar");
 #else
-pref("urlclassifier.phishTable", "googpub-phish-shavar,test-phish-simple");
+pref("urlclassifier.phishTable", "googpub-phish-shavar,test-phish-simple,aqksb-phish-shavar,utnpnb-phish-shavar");
 #endif
 
 // Tables for application reputation.
@@ -5192,6 +5192,11 @@ pref("browser.safebrowsing.reportMalwareMistakeURL", "https://%LOCALE%.malware-e
 // The table and global pref for blocking plugin content
 pref("browser.safebrowsing.blockedURIs.enabled", true);
 pref("urlclassifier.blockedTable", "test-block-simple,mozplugin-block-digest256");
+
+pref("browser.safebrowsing.provider.mozcn.lists", "aqksb-phish-shavar,utnpnb-phish-shavar");
+pref("browser.safebrowsing.provider.mozcn.updateURL", "https://sb.firefox.com.cn/downloads?client=SAFEBROWSING_ID&appver=%VERSION%&pver=2.2");
+pref("browser.safebrowsing.provider.mozcn.gethashURL", "https://sb.firefox.com.cn/gethash?client=SAFEBROWSING_ID&appver=%VERSION%&pver=2.2");
+pref("browser.safebrowsing.provider.mozcn.reportURL", "https://www.firefox.com.cn/help/safe-browsing?client=%NAME%&hl=%LOCALE%&site=");
 
 // The protocol version we communicate with mozilla server.
 pref("browser.safebrowsing.provider.mozilla.pver", "2.2");
