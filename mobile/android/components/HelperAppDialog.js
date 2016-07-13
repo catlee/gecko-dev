@@ -29,6 +29,7 @@ XPCOMUtils.defineLazyModuleGetter(this, "RuntimePermissions", "resource://gre/mo
 XPCOMUtils.defineLazyModuleGetter(this, "EventDispatcher", "resource://gre/modules/Messaging.jsm");
 XPCOMUtils.defineLazyModuleGetter(this, "Snackbars", "resource://gre/modules/Snackbars.jsm");
 XPCOMUtils.defineLazyModuleGetter(this, "JNI", "resource://gre/modules/JNI.jsm");
+XPCOMUtils.defineLazyModuleGetter(this, "Prompt", "resource://gre/modules/Prompt.jsm");
 
 // -----------------------------------------------------------------------
 // HelperApp Launcher Dialog
@@ -130,12 +131,7 @@ HelperAppLauncherDialog.prototype = {
     ].indexOf(mimeType) != -1;
   },
 
-  show: function hald_show(aLauncher, aContext, aReason) {
-    if (!this._canDownload(aLauncher.source)) {
-      this._refuseDownload(aLauncher);
-      return;
-    }
-
+  _show: function (aLauncher, aContext, aReason) {
     if (this._shouldForwardToAndroidDownloadManager(aLauncher)) {
       Task.spawn(function* () {
         try {
@@ -259,6 +255,30 @@ HelperAppLauncherDialog.prototype = {
     }
 
     return useNewButtonOrder;
+  },
+
+  show: function hald_show(aLauncher, aContext, aReason) {
+    if (!this._canDownload(aLauncher.source)) {
+      this._refuseDownload(aLauncher);
+      return;
+    }
+
+    let bundle = Services.strings.createBundle("chrome://browser/locale/browser.properties");
+    let url = aLauncher.source.specIgnoringRef.split("/");
+    new Prompt({
+      title: bundle.GetStringFromName("helperapps.saveToDisk"),
+      message: bundle.formatStringFromName("helperapps.downloadPromission", [decodeURIComponent(url[url.length - 1])], 1),
+      buttons: [
+        // This puts Cancel on the right.
+        bundle.GetStringFromName("helperapps.saveToDisk"),
+        bundle.GetStringFromName("helperapps.ignore"),
+      ],
+    }).show(data => {
+      if (data.button != 0 ) {
+        return;
+      }
+      this._show(aLauncher, aContext, aReason);
+    });
   },
 
   _refuseDownload: function(aLauncher) {
