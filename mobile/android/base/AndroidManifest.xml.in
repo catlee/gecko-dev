@@ -21,6 +21,7 @@
      on top of a pre-installed bouncer APK.  Add such shared elements in the
      fileincluded here, so that they can be referenced by both APKs. -->
 #include FennecManifest_permissions.xml.in
+#include ../thirdparty/baidu-geolocation-libs/manifests/BaiduGeolocation_permissions.xml.in
 
     <application android:label="@string/moz_app_displayname"
                  android:icon="@drawable/icon"
@@ -268,6 +269,7 @@
             </intent-filter>
         </receiver>
 
+#include ../thirdparty/baidu-geolocation-libs/manifests/BaiduGeolocation_services.xml.in
 #include ../services/manifests/FxAccountAndroidManifest_activities.xml.in
 #ifdef MOZ_ANDROID_SEARCH_ACTIVITY
 #include ../search/manifests/SearchAndroidManifest_activities.xml.in
