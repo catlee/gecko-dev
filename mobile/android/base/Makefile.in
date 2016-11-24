@@ -162,6 +162,8 @@ ifdef MOZ_INSTALL_TRACKING
 GECKOVIEW_JARS += gecko-thirdparty-adjust_sdk.jar
 endif
 
+GECKOVIEW_JARS += $(topsrcdir)/mobile/android/thirdparty/baidu-geolocation-libs/BaiduLBS_Android.jar
+
 geckoview_jars_classpath := $(subst $(NULL) ,:,$(strip $(GECKOVIEW_JARS)))
 
 FENNEC_JARS = \
