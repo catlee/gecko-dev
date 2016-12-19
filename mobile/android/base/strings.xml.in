@@ -64,6 +64,7 @@
   <string name="firstrun_welcome_restricted">&onboard_start_restricted1;</string>
 
   <string name="bookmarks_title">&bookmarks_title;</string>
+  <string name="bookmarks_history_title">&bookmarks_history_title;</string>
   <string name="history_title">&history_title;</string>
 
   <string name="switch_to_tab">&switch_to_tab;</string>
