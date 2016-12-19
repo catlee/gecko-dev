@@ -3671,7 +3671,7 @@ public class BrowserApp extends GeckoApp
         // If we don't know whether the panels are hidden, just show the menu items.
         final SharedPreferences prefs = GeckoSharedPrefs.forProfile(getContext());
         bookmarksList.setVisible(prefs.getBoolean(HomeConfig.PREF_KEY_BOOKMARKS_PANEL_ENABLED, true));
-        historyList.setVisible(prefs.getBoolean(HomeConfig.PREF_KEY_HISTORY_PANEL_ENABLED, true));
+        historyList.setVisible(prefs.getBoolean(HomeConfig.PREF_KEY_HISTORY_PANEL_ENABLED, false));
 
         return true;
     }
