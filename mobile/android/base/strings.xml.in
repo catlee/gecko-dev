@@ -663,4 +663,8 @@
   <string name="compatible_mode_menu_stop">&compatible_mode_menu_stop;</string>
   <string name="compatible_mode_save_image">&compatible_mode_save_image;</string>
   <string name="compatible_mode_save_url">&compatible_mode_save_url;</string>
+
+  <!-- Open China Home -->
+  <string name="open_china_home">&open_china_home;</string>
+
 </resources>

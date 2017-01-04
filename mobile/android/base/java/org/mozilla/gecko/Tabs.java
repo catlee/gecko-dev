@@ -41,6 +41,8 @@ import android.os.Handler;
 import android.provider.Browser;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.content.SharedPreferences;
+import org.mozilla.gecko.preferences.GeckoPreferences;
 
 public class Tabs implements BundleEventListener {
     private static final String LOGTAG = "GeckoTabs";
@@ -416,7 +418,13 @@ public class Tabs implements BundleEventListener {
         removeTab(tabId);
 
         if (nextTab == null) {
-            nextTab = loadUrl(AboutPages.HOME, LOADURL_NEW_TAB);
+            final SharedPreferences prefs = GeckoSharedPrefs.forProfile(mAppContext);
+            String url = prefs.getString(GeckoPreferences.PREFS_HOMEPAGE, AboutPages.CHINAHOME);
+            if (prefs.getBoolean(GeckoPreferences.PREFS_OPEN_CHINAHOME_ENABLED, true)) {
+                nextTab = loadUrl(url, LOADURL_NEW_TAB);
+            } else {
+                nextTab = loadUrl(AboutPages.HOME, LOADURL_NEW_TAB);
+            }
         }
 
         selectTab(nextTab.getId());
@@ -1033,11 +1041,23 @@ public class Tabs implements BundleEventListener {
     }
 
     public Tab addTab() {
-        return loadUrl(AboutPages.HOME, Tabs.LOADURL_NEW_TAB);
+        final SharedPreferences prefs = GeckoSharedPrefs.forProfile(mAppContext);
+        String url = prefs.getString(GeckoPreferences.PREFS_HOMEPAGE, AboutPages.CHINAHOME);
+        if (prefs.getBoolean(GeckoPreferences.PREFS_OPEN_CHINAHOME_ENABLED, true)) {
+            return loadUrl(url, Tabs.LOADURL_NEW_TAB);
+        } else {
+            return loadUrl(AboutPages.HOME, Tabs.LOADURL_NEW_TAB);
+        }
     }
 
     public Tab addPrivateTab() {
-        return loadUrl(AboutPages.PRIVATEBROWSING, Tabs.LOADURL_NEW_TAB | Tabs.LOADURL_PRIVATE);
+        final SharedPreferences prefs = GeckoSharedPrefs.forProfile(mAppContext);
+        String url = prefs.getString(GeckoPreferences.PREFS_HOMEPAGE, AboutPages.CHINAHOME);
+        if (prefs.getBoolean(GeckoPreferences.PREFS_OPEN_CHINAHOME_ENABLED, true)) {
+            return loadUrl(url, Tabs.LOADURL_NEW_TAB | Tabs.LOADURL_PRIVATE);
+        } else {
+            return loadUrl(AboutPages.PRIVATEBROWSING, Tabs.LOADURL_NEW_TAB | Tabs.LOADURL_PRIVATE);
+        }
     }
 
     /**

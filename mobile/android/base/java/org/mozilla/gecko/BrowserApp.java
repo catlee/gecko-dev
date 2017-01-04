@@ -3450,6 +3450,10 @@ public class BrowserApp extends GeckoApp
         MenuItem compatibleMode = aMenu.findItem(R.id.compatible_mode);
         compatibleMode.setChecked(mCompatibleMode);
 
+        final SharedPreferences preferences = GeckoSharedPrefs.forProfile(getContext());
+        MenuItem openChinaHome = aMenu.findItem(R.id.open_china_home);
+        openChinaHome.setChecked(preferences.getBoolean(GeckoPreferences.PREFS_OPEN_CHINAHOME_ENABLED, true));
+
         // Hide the tab history panel when hardware menu button is pressed.
         TabHistoryFragment frag = (TabHistoryFragment) getSupportFragmentManager().findFragmentByTag(TAB_HISTORY_FRAGMENT_TAG);
         if (frag != null) {
@@ -3870,6 +3874,14 @@ public class BrowserApp extends GeckoApp
         if (itemId == R.id.compatible_mode) {
             // Toggle compatible mode.
             PrefsHelper.setPref(PREF_COMPATIBLE_MODE, mCompatibleMode ? 2 : 1);
+            return true;
+        }
+
+        if (itemId == R.id.open_china_home) {
+            // Toggle open china homepage.
+            final SharedPreferences preferences = GeckoSharedPrefs.forProfile(getContext());
+            final boolean isOpenChinaHome = preferences.getBoolean(GeckoPreferences.PREFS_OPEN_CHINAHOME_ENABLED, true);
+            preferences.edit().putBoolean(GeckoPreferences.PREFS_OPEN_CHINAHOME_ENABLED, !isOpenChinaHome).apply();
             return true;
         }
 
