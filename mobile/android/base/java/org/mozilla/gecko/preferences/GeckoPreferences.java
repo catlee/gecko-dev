@@ -130,6 +130,7 @@ public class GeckoPreferences
     public static final String PREFS_TRACKING_PROTECTION_PROMPT_SHOWN = NON_PREF_PREFIX + "trackingProtectionPromptShown";
     public static final String PREFS_HEALTHREPORT_UPLOAD_ENABLED = NON_PREF_PREFIX + "healthreport.uploadEnabled";
     public static final String PREFS_SYNC = NON_PREF_PREFIX + "sync";
+    public static final String PREFS_OPEN_CHINAHOME_ENABLED = NON_PREF_PREFIX + "open_chinahome_enabled";
 
     private static boolean sIsCharEncodingEnabled;
     private boolean mInitialized;
