@@ -751,6 +751,9 @@ just addresses the organization to follow, e.g. "This site is run by " -->
 <!ENTITY compatible_mode_save_image "保存到 /sdcard/">
 <!ENTITY compatible_mode_save_url "复制到剪贴板">
 
+<!-- Open China Home -->
+<!ENTITY open_china_home "默认打开主页">
+
 <!-- Miscellaneous -->
 <!-- LOCALIZATION NOTE (ellipsis): This text is appended to a piece of text that does not fit in the
      designated space. Use the unicode ellipsis char, \u2026, or use "..." if \u2026 doesn't suit
