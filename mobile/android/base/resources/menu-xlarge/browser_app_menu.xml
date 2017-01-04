@@ -69,6 +69,10 @@
                   android:title="@string/compatible_mode"
                   android:checkable="true" />
 
+            <item android:id="@+id/open_china_home"
+                  android:title="@string/open_china_home"
+                  android:checkable="true" />
+
             <item android:id="@+id/subscribe"
                   android:title="@string/contextmenu_subscribe"/>
 
