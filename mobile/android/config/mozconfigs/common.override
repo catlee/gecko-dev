@@ -8,4 +8,7 @@
 MOZ_REQUIRE_SIGNING=0
 
 . "$topsrcdir/build/mozconfig.common.override"
+
+ac_add_options --without-mozilla-api-keyfile
+
 . "$topsrcdir/build/mozconfig.cache"
