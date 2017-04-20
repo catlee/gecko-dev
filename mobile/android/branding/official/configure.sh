@@ -3,8 +3,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 MOZ_APP_DISPLAYNAME=Firefox
-ANDROID_PACKAGE_NAME=org.mozilla.firefox
+ANDROID_PACKAGE_NAME=cn.mozilla.firefox
 MOZ_UPDATER=
 MOZ_ANDROID_ANR_REPORTER=
-MOZ_ANDROID_SHARED_ID=org.mozilla.firefox.sharedID
+MOZ_ANDROID_SHARED_ID=cn.mozilla.firefox.sharedID
 MOZ_ANDROID_GCM_SENDERID=965234145045
