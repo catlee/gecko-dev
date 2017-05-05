@@ -135,7 +135,7 @@ public class UpdateServiceHelper {
             .replace("%DISTRIBUTION_VERSION%", "default")
             .replace("%MOZ_VERSION%", AppConstants.MOZILLA_VERSION);
 
-        String channelId = "base";
+        String channelId = "google";
 
         url = CN_UPDATE_URL
                 .replace("%LOCALE%", locale)
